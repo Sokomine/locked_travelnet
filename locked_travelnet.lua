@@ -72,11 +72,6 @@ minetest.register_node("locked_travelnet:travelnet", {
     
     on_receive_fields = function(pos, formname, fields, sender)
 
- 	 	          -- abort if no input has been sent
-		          if( fields.quit ) then
-		              return;
-                          end
-
                           -- if the user already has the right to use this and did input text
                           if(      (not(fields.locks_sent_lock_command) 
                                      or fields.locks_sent_lock_command=="")
