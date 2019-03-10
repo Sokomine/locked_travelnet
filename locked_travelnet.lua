@@ -43,7 +43,7 @@ minetest.register_node("locked_travelnet:travelnet", {
              },
     inventory_image = "locked_travelnet_lock_inv.png",
 
-    groups = {cracky=1,choppy=1,snappy=1},
+    groups = {}, --cracky=1,choppy=1,snappy=1},
 
     light_source = 10,
 
@@ -55,6 +55,7 @@ minetest.register_node("locked_travelnet:travelnet", {
                             "field[0.3,5.6;6,0.7;station_name;Name of this station:;]"..
                             "field[0.3,6.6;6,0.7;station_network;Assign to Network:;]"..
                             "field[0.3,7.6;6,0.7;owner_name;(optional) owned by:;]"..
+			    "button_exit[8.0,0.0;2.2,0.7;station_dig;Remove station]"..
 --                            "button_exit[6.3,6.2;1.7,0.7;station_set;Store]".. 
                             "field[0.3,3.0;6,0.7;locks_sent_lock_command;Locked travelnet. Type /help for help:;]"..
                             "button_exit[6.3,3.2;1.7,0.7;locks_sent_input;Store]" );

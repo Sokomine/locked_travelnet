@@ -41,7 +41,7 @@ minetest.register_node("locked_travelnet:elevator", {
     inventory_image = "travelnet_elevator_inv.png",
     wield_image     = "travelnet_elevator_wield.png",
 
-    groups = {cracky=1,choppy=1,snappy=1},
+    groups = {}, --cracky=1,choppy=1,snappy=1},
 
 
     light_source = 10,
@@ -53,6 +53,7 @@ minetest.register_node("locked_travelnet:elevator", {
                             "size[12,10]"..
                             "field[0.3,5.6;6,0.7;station_name;Name of this station:;]"..
 --                            "button_exit[6.3,6.2;1.7,0.7;station_set;Store]".. 
+			    "button_exit[8.0,0.0;2.2,0.7;station_dig;Remove station]"..
                             "field[0.3,3.0;6,0.7;locks_sent_lock_command;Locked travelnet. Type /help for help:;]"..
                             "button_exit[6.3,3.2;1.7,0.7;locks_sent_input;Store]" );
     end,
@@ -167,7 +168,7 @@ minetest.register_node("locked_travelnet:elevator_top", {
 
     light_source = 10,
 
-    groups = {cracky=1,choppy=1,snappy=1,not_in_creative_inventory=1},
+    groups = {}, --cracky=1,choppy=1,snappy=1,not_in_creative_inventory=1},
 })
 
 
