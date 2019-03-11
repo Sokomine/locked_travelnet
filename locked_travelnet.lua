@@ -48,7 +48,7 @@ minetest.register_node("locked_travelnet:travelnet", {
     light_source = 10,
 
     on_construct = function(pos)
-        local meta = minetest.env:get_meta(pos)
+        local meta = minetest.get_meta(pos)
         --- prepare the lock of the travelnet
         locks:lock_init( pos, 
                             "size[12,10]"..
@@ -62,7 +62,7 @@ minetest.register_node("locked_travelnet:travelnet", {
     end,
 
     after_place_node  = function(pos, placer, itemstack)
-	local meta = minetest.env:get_meta(pos);
+	local meta = minetest.get_meta(pos);
         meta:set_string("infotext",       "Travelnet-box (unconfigured)");
         meta:set_string("station_name",   "");
         meta:set_string("station_network","");
@@ -107,7 +107,7 @@ minetest.register_node("locked_travelnet:travelnet", {
     on_place = function(itemstack, placer, pointed_thing)
 
        local pos = pointed_thing.above;
-       if( minetest.env:get_node({x=pos.x, y=pos.y+1, z=pos.z}).name ~= "air" ) then
+       if( minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name ~= "air" ) then
 
           minetest.chat_send_player( placer:get_player_name(), 'Not enough vertical space to place the travelnet box!' )
           return;

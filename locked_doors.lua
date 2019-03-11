@@ -12,7 +12,7 @@ locked_travelnet_doors_transform = function( pos, node, puncher, transform_into 
 
    local olddata = locks:get_lockdata( pos );
 
-   minetest.env:add_node(pos, {name = transform_into, param2 = node.param2})
+   minetest.add_node(pos, {name = transform_into, param2 = node.param2})
    locks:set_lockdata( pos, olddata );
 end
 
