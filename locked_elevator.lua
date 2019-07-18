@@ -20,17 +20,17 @@ minetest.register_node("locked_travelnet:elevator", {
 	    fixed = {
 
                 { 0.48, -0.5,-0.5,  0.5,  0.5, 0.5},
-                {-0.5 , -0.5, 0.48, 0.48, 0.5, 0.5}, 
+                {-0.5 , -0.5, 0.48, 0.48, 0.5, 0.5},
                 {-0.5,  -0.5,-0.5 ,-0.48, 0.5, 0.5},
 
                 --groundplate to stand on
-                { -0.5,-0.5,-0.5,0.5,-0.48, 0.5}, 
+                { -0.5,-0.5,-0.5,0.5,-0.48, 0.5},
             },
     },
-    
+
 
     tiles = {
-          
+
              "travelnet_elevator_inside_floor.png",  -- view from top
              "default_stone.png",  -- view from bottom
 	     "travelnet_elevator_inside_bottom.png", -- left side
@@ -49,10 +49,10 @@ minetest.register_node("locked_travelnet:elevator", {
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         --- prepare the lock of the travelnet
-        locks:lock_init( pos, 
+        locks:lock_init( pos,
                             "size[12,10]"..
                             "field[0.3,5.6;6,0.7;station_name;Name of this station:;]"..
---                            "button_exit[6.3,6.2;1.7,0.7;station_set;Store]".. 
+--                            "button_exit[6.3,6.2;1.7,0.7;station_set;Store]"..
 			    "button_exit[8.0,0.0;2.2,0.7;station_dig;Remove station]"..
                             "field[0.3,3.0;6,0.7;locks_sent_lock_command;Locked travelnet. Type /help for help:;]"..
                             "button_exit[6.3,3.2;1.7,0.7;locks_sent_input;Store]" );
@@ -72,7 +72,7 @@ minetest.register_node("locked_travelnet:elevator", {
 
        locks:lock_set_owner( pos, placer, "Shared locked elevator" );
     end,
-    
+
     on_receive_fields = function(pos, formname, fields, sender)
 
  	 	          -- abort if no input has been sent
@@ -81,12 +81,12 @@ minetest.register_node("locked_travelnet:elevator", {
                           end
 
                           -- if the user already has the right to use this and did input text
-                          if(      (not(fields.locks_sent_lock_command) 
+                          if(      (not(fields.locks_sent_lock_command)
                                      or fields.locks_sent_lock_command=="")
                               and locks:lock_allow_use( pos, sender )) then
 
                               travelnet.on_receive_fields( pos, formname, fields, sender );
-                  
+
                           -- a command for the lock?
                           else
                              locks:lock_handle_input( pos, formname, fields, sender );
@@ -112,8 +112,9 @@ minetest.register_node("locked_travelnet:elevator", {
     on_place = function(itemstack, placer, pointed_thing)
        local pos  = pointed_thing.above;
        local node = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z});
+       local def = minetest.registered_nodes[node.name]
        -- leftover elevator_top nodes can be removed by placing a new elevator underneath
-       if( node ~= nil and node.name ~= "air" and node.name ~= 'locked_travelnet:elevator_top') then
+       if not def or not def.buildable_to then
           minetest.chat_send_player( placer:get_player_name(), 'Not enough vertical space to place the travelnet box!' )
           return;
        end
@@ -145,17 +146,17 @@ minetest.register_node("locked_travelnet:elevator_top", {
 	    fixed = {
 
                 { 0.48, -0.5,-0.5,  0.5,  0.5, 0.5},
-                {-0.5 , -0.5, 0.48, 0.48, 0.5, 0.5}, 
+                {-0.5 , -0.5, 0.48, 0.48, 0.5, 0.5},
                 {-0.5,  -0.5,-0.5 ,-0.48, 0.5, 0.5},
 
                 --top ceiling
-                { -0.5, 0.48,-0.5,0.5, 0.5, 0.5}, 
+                { -0.5, 0.48,-0.5,0.5, 0.5, 0.5},
             },
     },
-    
+
 
     tiles = {
-          
+
              "default_stone.png",  -- view from top
              "travelnet_elevator_inside_ceiling.png",  -- view from bottom
 	     "travelnet_elevator_inside_top_control.png", -- left side

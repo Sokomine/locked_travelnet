@@ -22,17 +22,17 @@ minetest.register_node("locked_travelnet:travelnet", {
 	    fixed = {
 
                 { 0.45, -0.5,-0.5,  0.5,  1.45, 0.5},
-                {-0.5 , -0.5, 0.45, 0.45, 1.45, 0.5}, 
+                {-0.5 , -0.5, 0.45, 0.45, 1.45, 0.5},
                 {-0.5,  -0.5,-0.5 ,-0.45, 1.45, 0.5},
 
                 --groundplate to stand on
-                { -0.5,-0.5,-0.5,0.5,-0.45, 0.5}, 
+                { -0.5,-0.5,-0.5,0.5,-0.45, 0.5},
                 --roof
-                { -0.5, 1.45,-0.5,0.5, 1.5, 0.5}, 
+                { -0.5, 1.45,-0.5,0.5, 1.5, 0.5},
 
             },
     },
-    
+
     tiles = {
              "default_clay.png",  -- view from top
              "default_clay.png",  -- view from bottom
@@ -50,13 +50,13 @@ minetest.register_node("locked_travelnet:travelnet", {
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         --- prepare the lock of the travelnet
-        locks:lock_init( pos, 
+        locks:lock_init( pos,
                             "size[12,10]"..
                             "field[0.3,5.6;6,0.7;station_name;Name of this station:;]"..
                             "field[0.3,6.6;6,0.7;station_network;Assign to Network:;]"..
                             "field[0.3,7.6;6,0.7;owner_name;(optional) owned by:;]"..
 			    "button_exit[8.0,0.0;2.2,0.7;station_dig;Remove station]"..
---                            "button_exit[6.3,6.2;1.7,0.7;station_set;Store]".. 
+--                            "button_exit[6.3,6.2;1.7,0.7;station_set;Store]"..
                             "field[0.3,3.0;6,0.7;locks_sent_lock_command;Locked travelnet. Type /help for help:;]"..
                             "button_exit[6.3,3.2;1.7,0.7;locks_sent_input;Store]" );
     end,
@@ -70,16 +70,16 @@ minetest.register_node("locked_travelnet:travelnet", {
         -- request initinal data
         locks:lock_set_owner( pos, placer, "Shared locked travelnet" );
     end,
-    
+
     on_receive_fields = function(pos, formname, fields, sender)
 
                           -- if the user already has the right to use this and did input text
-                          if(      (not(fields.locks_sent_lock_command) 
+                          if(      (not(fields.locks_sent_lock_command)
                                      or fields.locks_sent_lock_command=="")
                               and locks:lock_allow_use( pos, sender )) then
 
                               travelnet.on_receive_fields( pos, formname, fields, sender );
-                  
+
                           -- a command for the lock?
                           else
                              locks:lock_handle_input( pos, formname, fields, sender );
@@ -107,7 +107,9 @@ minetest.register_node("locked_travelnet:travelnet", {
     on_place = function(itemstack, placer, pointed_thing)
 
        local pos = pointed_thing.above;
-       if( minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name ~= "air" ) then
+       local node = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
+       local def = minetest.registered_nodes[node.name]
+       if not def or not def.buildable_to then
 
           minetest.chat_send_player( placer:get_player_name(), 'Not enough vertical space to place the travelnet box!' )
           return;
