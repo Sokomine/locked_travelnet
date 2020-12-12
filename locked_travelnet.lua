@@ -87,6 +87,9 @@ minetest.register_node("locked_travelnet:travelnet", {
     end,
 
     on_punch          = function(pos, node, puncher)
+                          if not locks:lock_allow_use( pos, puncher ) then
+                              return false
+                          end
                           travelnet.update_formspec(pos, puncher:get_player_name())
     end,
 
