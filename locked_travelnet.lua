@@ -69,6 +69,8 @@ minetest.register_node("locked_travelnet:travelnet", {
         meta:set_string("owner",          placer:get_player_name() );
         -- request initinal data
         locks:lock_set_owner( pos, placer, "Shared locked travelnet" );
+        local top_pos = vector.add({x=0,y=1,z=0}, pos)
+        minetest.set_node(top_pos, {name="travelnet:hidden_top"})
     end,
     
     on_receive_fields = function(pos, formname, fields, sender)
@@ -107,8 +109,9 @@ minetest.register_node("locked_travelnet:travelnet", {
     on_place = function(itemstack, placer, pointed_thing)
 
        local pos = pointed_thing.above;
-       if( minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name ~= "air" ) then
-
+       local node = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
+       local def = minetest.registered_nodes[node.name]
+       if (not def or not def.buildable_to) and node.name ~= "travelnet:hidden_top" then
           minetest.chat_send_player( placer:get_player_name(), 'Not enough vertical space to place the travelnet box!' )
           return;
        end
@@ -124,5 +127,9 @@ minetest.register_craft({
       { 'travelnet:travelnet', 'locks:lock' },
    },
 })
+
+if minetest.global_exists("mesecon") and mesecon.register_mvps_stopper then
+  mesecon.register_mvps_stopper('locked_travelnet:travelnet')
+end
 
 print( "[Mod] locked_travelnet: loading locked_travelnet:travelnet");
