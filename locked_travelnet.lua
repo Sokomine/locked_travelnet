@@ -128,4 +128,8 @@ minetest.register_craft({
    },
 })
 
+if minetest.global_exists("mesecon") and mesecon.register_mvps_stopper then
+  mesecon.register_mvps_stopper('locked_travelnet:travelnet')
+end
+
 print( "[Mod] locked_travelnet: loading locked_travelnet:travelnet");
